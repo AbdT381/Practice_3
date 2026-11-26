@@ -63,3 +63,16 @@ def validate(instr: Instruction) -> None:
             raise ValueError(
                 f"{instr.op}.{fname}={value} вне диапазона 0..{mask}"
             )
+
+def encode(instr: Instruction) -> bytes:
+    """Упаковывает Instruction в байты согласно спецификации УВМ."""
+    word = OPCODES[instr.op]  # поле A в битах 0..7
+    for fname, value in instr.fields.items():
+        shift, mask = FIELDS[instr.op][fname]
+        word |= (value & mask) << shift
+    return word.to_bytes(SIZES[instr.op], "little")
+
+
+def encode_program(program: List[Instruction]) -> bytes:
+    """Кодирует всю программу в единый поток байтов."""
+    return b"".join(encode(i) for i in program)
