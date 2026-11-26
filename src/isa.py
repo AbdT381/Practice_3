@@ -31,7 +31,7 @@ SIZES = {
     "mul": 4,
 }
 
-# Спецификация битовых полей: имя -> (сдвиг, маска)
+
 FIELDS = {
     "load_const": {"B": (8, 0x7F), "C": (15, 0x1FFFFF)},
     "read_mem":   {"B": (8, 0x7F), "C": (15, 0x7FFFFFF)},
@@ -66,7 +66,7 @@ def validate(instr: Instruction) -> None:
 
 def encode(instr: Instruction) -> bytes:
     """Упаковывает Instruction в байты согласно спецификации УВМ."""
-    word = OPCODES[instr.op]  # поле A в битах 0..7
+    word = OPCODES[instr.op] 
     for fname, value in instr.fields.items():
         shift, mask = FIELDS[instr.op][fname]
         word |= (value & mask) << shift
