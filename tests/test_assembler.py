@@ -50,6 +50,17 @@ class TestAssembler(unittest.TestCase):
         with self.assertRaises(ValueError):
             parse_program([{"op": "nop"}])
 
+    def test_encode_matches_spec(self):
+    prog = parse_program(SPEC)
+    expected = [
+        bytes([0x5C, 0xE0, 0xA8, 0x00, 0x00]),
+        bytes([0xC2, 0xFF, 0x54, 0x01, 0x00, 0x00]),
+        bytes([0xCF, 0xC3, 0x00]),
+        bytes([0x1E, 0x42, 0x52, 0x02]),
+    ]
+    for instr, exp in zip(prog, expected):
+        self.assertEqual(encode(instr), exp)
+
 
 if __name__ == "__main__":
     unittest.main()
