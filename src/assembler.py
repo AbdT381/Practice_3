@@ -51,7 +51,7 @@ def print_test_view(program: List[Instruction]) -> None:
 
 def encode(instr: Instruction) -> bytes:
     """Упаковывает Instruction в байты согласно спецификации УВМ."""
-    word = OPCODES[instr.op]  # поле A в битах 0..7
+    word = OPCODES[instr.op] 
     for fname, value in instr.fields.items():
         shift, mask = FIELDS[instr.op][fname]
         word |= (value & mask) << shift
