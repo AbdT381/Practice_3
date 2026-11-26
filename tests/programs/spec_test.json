@@ -1,6 +1,4 @@
-[
-  {"op": "load_const", "addr": 96,  "value": 337},
-  {"op": "read_mem",   "dst": 127,  "src": 681},
-  {"op": "write_mem",  "src": 67,   "addr_reg": 1},
-  {"op": "mul",        "dst": 36,   "a": 9,   "b": 66}
-]
+[0] load_const: 0x5C, 0xE0, 0xA8, 0x00, 0x00
+[1] read_mem:   0xC2, 0xFF, 0x54, 0x01, 0x00, 0x00
+[2] write_mem:  0xCF, 0xC3, 0x00
+[3] mul:        0x1E, 0x42, 0x52, 0x02
