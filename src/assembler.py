@@ -49,6 +49,18 @@ def print_test_view(program: List[Instruction]) -> None:
     print("=" * 60)
     print(f"Всего команд: {len(program)}")
 
+def encode(instr: Instruction) -> bytes:
+    """Упаковывает Instruction в байты согласно спецификации УВМ."""
+    word = OPCODES[instr.op]  # поле A в битах 0..7
+    for fname, value in instr.fields.items():
+        shift, mask = FIELDS[instr.op][fname]
+        word |= (value & mask) << shift
+    return word.to_bytes(SIZES[instr.op], "little")
+
+
+def encode_program(program: List[Instruction]) -> bytes:
+    """Кодирует всю программу в единый поток байтов."""
+    return b"".join(encode(i) for i in program)
 
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(
@@ -65,13 +77,19 @@ def main(argv=None) -> int:
     with open(args.source, "r", encoding="utf-8") as f:
         data = json.load(f)
 
-    program = parse_program(data)
+        binary = encode_program(program)
+    with open(args.output, "wb") as f:
+        f.write(binary)
+
+    print(f"Ассемблировано команд: {len(program)}")
 
     if args.test:
         print_test_view(program)
-    else:
-        print(f"Ассемблировано команд: {len(program)}")
-        print(f"(Этап 2 добавит запись в {args.output})")
+        print("Байтовый код:")
+        for i, instr in enumerate(program):
+            raw = encode(instr)
+            hex_str = ", ".join(f"0x{b:02X}" for b in raw)
+            print(f"[{i}] {instr.op}: {hex_str}")
 
     return 0
 
