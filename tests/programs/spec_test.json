@@ -1,0 +1,6 @@
+[
+  {"op": "load_const", "addr": 96,  "value": 337},
+  {"op": "read_mem",   "dst": 127,  "src": 681},
+  {"op": "write_mem",  "src": 67,   "addr_reg": 1},
+  {"op": "mul",        "dst": 36,   "a": 9,   "b": 66}
+]
